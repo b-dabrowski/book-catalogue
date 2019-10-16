@@ -2,7 +2,7 @@
   "scripts": {
     "start": "node src/server.js",
     "test:unit": "mocha test/unit",
-    "test:component": "mocha test/component",
+    "test:component": "mocha --exit test/component",
     "watch": "nodemon src/server.js"
   },
   "dependencies": {
@@ -12,6 +12,7 @@
   "devDependencies": {
     "mocha": "6.2.1",
     "nodemon": "1.19.4",
-    "supertest": "4.0.2"
+    "supertest": "4.0.2",
+    "why-is-node-running": "2.1.0"
   }
 }
