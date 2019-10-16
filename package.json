@@ -6,6 +6,7 @@
     "watch": "nodemon src/server.js"
   },
   "dependencies": {
+    "@hapi/joi": "16.1.7",
     "express": "4.17.1",
     "mongodb": "3.2.7"
   },
