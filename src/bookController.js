@@ -1,25 +1,15 @@
-const MongoClient = require('mongodb').MongoClient;
-
-// const url = 'mongodb://db:27017/booksapi'; // when using docker-compose for full development
-const url = 'mongodb://localhost:27017/booksapi1';
-
-let booksPromise = MongoClient
-    .connect(url, {bufferMaxEntries: 0, useNewUrlParser: true})
-    .then(function (client) {
-        return client.db().collection("books");
-    });
+const bookRepository = require("./bookRepository");
 
 module.exports = {
     async createOrUpdate(req, res, next) {
         try {
+            // HTTP
             const {title, authors, isbn, description} = req.body;
 
-            const books = await booksPromise;
-            await books.updateOne(
-                {isbn: isbn},
-                {$set: {title, authors, isbn, description}},
-                {upsert: true}
-            );
+            // JS
+            await bookRepository.createOrUpdate({title, authors, isbn, description});
+
+            // HTTP
             res.json({title, authors, isbn, description});
         } catch (e) {
             next(e);
@@ -27,9 +17,13 @@ module.exports = {
     },
     async details(req, res, next) {
         try {
+            // HTTP
             const isbn = req.params.isbn;
-            const books = await booksPromise;
-            const book = await books.findOne({isbn}, {projection: {_id: 0}});
+
+            // JS
+            const book = await bookRepository.findOne(isbn);
+
+            // HTTP
             res.json(book);
         } catch (e) {
             next(e);
