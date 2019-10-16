@@ -16,6 +16,17 @@ module.exports = {
             next(e);
         }
     },
+    async deleteOne(req, res, next) {
+        try {
+            const isbn = req.params.isbn;
+
+            await bookRepository.delete(isbn);
+
+            res.status(204).end();
+        } catch(e) {
+            next(e);
+        }
+    },
     async details(req, res, next) {
         try {
             // HTTP
@@ -25,10 +36,12 @@ module.exports = {
             const book = await bookRepository.findOne(isbn);
 
             // HTTP
-            res.json(book);
+            book ? res.json(book): next();
         } catch (e) {
             next(e);
         }
     }
 };
 
+
+// Mongo API: books.deleteOne({isbn})

@@ -26,5 +26,9 @@ describe('Book inventory', function () {
             isbn: "0123456789",
             description: "The ultimate JS book!"
         });
+
+        await request.delete(createResult.header.location).expect(204);
+
+        await request.get(createResult.header.location).expect(404);
     })
 });

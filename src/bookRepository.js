@@ -10,16 +10,20 @@ let booksPromise = MongoClient
     });
 
 module.exports = {
-    async createOrUpdate({title, slug, authors, isbn, description}) {
+    async createOrUpdate(book) {
         const books = await booksPromise;
         await books.updateOne(
-            {isbn: isbn},
-            {$set: {title, slug, authors, isbn, description}},
+            {isbn: book.isbn},
+            {$set: book},
             {upsert: true}
         );
     },
     async findOne(isbn) {
         const books = await booksPromise;
         return books.findOne({isbn}, {projection: {_id: 0}});
+    },
+    async delete(isbn) {
+        const books = await booksPromise;
+        return books.deleteOne({isbn});
     }
 };

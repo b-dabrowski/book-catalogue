@@ -5,7 +5,7 @@ module.exports = {
         next(err);
     },
     errorHandler(err, req, res, next) {
-        console.log(err.stack);
+        // console.log(err.stack);
         res.status(err.status || 500);
         res.json({message: err.message, error: isProduction() ? {} : err.stack});
     }

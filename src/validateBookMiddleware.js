@@ -3,6 +3,7 @@ const validateBook = require("./validateBook");
 module.exports = function validate(req, res, next) {
     const validationErrors = validateBook(req.body);
 
+    console.log(validationErrors);
     if(validationErrors) {
         const error = new Error();
         error.message = validationErrors;
