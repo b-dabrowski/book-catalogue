@@ -6,7 +6,8 @@
     "watch": "nodemon src/server.js"
   },
   "dependencies": {
-    "express": "4.17.1"
+    "express": "4.17.1",
+    "mongodb": "3.2.7"
   },
   "devDependencies": {
     "mocha": "6.2.1",
