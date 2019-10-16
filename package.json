@@ -1,12 +1,16 @@
 {
   "scripts": {
     "start": "node src/server.js",
+    "test:unit": "mocha test/unit",
+    "test:component": "mocha test/component",
     "watch": "nodemon src/server.js"
   },
   "dependencies": {
     "express": "4.17.1"
   },
   "devDependencies": {
-    "nodemon": "1.19.4"
+    "mocha": "6.2.1",
+    "nodemon": "1.19.4",
+    "supertest": "4.0.2"
   }
 }
