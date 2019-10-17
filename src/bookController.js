@@ -1,7 +1,7 @@
-const bookRepository = require("./bookRepository");
-const bookService = require("./bookService");
+// const bookRepository = require("./bookRepository");
+// const bookService = require("./bookService");
 
-module.exports = {
+module.exports = ({bookService, bookRepository}) => ({
     async createOrUpdate(req, res, next) {
         try {
             // HTTP
@@ -13,6 +13,7 @@ module.exports = {
             // HTTP
             res.redirect("/book/" + isbn);
         } catch (e) {
+            console.log(e);
             next(e);
         }
     },
@@ -41,7 +42,9 @@ module.exports = {
             next(e);
         }
     }
-};
+});
+
+// statements (if) vs expressions (?:)
 
 
 // Mongo API: books.deleteOne({isbn})
