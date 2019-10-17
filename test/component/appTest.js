@@ -1,9 +1,11 @@
 const httpClient = require('supertest');
 const assert = require('assert');
-const app = require('../../src/app');
+
 
 describe('Book inventory', function () {
     it('allows to stock up the items', async function () {
+        const db = await require("../../src/connection");
+        const app = require('../../src/app')(db);
         const request = httpClient(app);
 
         // POST/REDIRECT
