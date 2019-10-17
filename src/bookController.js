@@ -1,50 +1,56 @@
-// const bookRepository = require("./bookRepository");
-// const bookService = require("./bookService");
+const mapValues = require("lodash.mapvalues");
 
-module.exports = ({bookService, bookRepository}) => ({
-    async createOrUpdate(req, res, next) {
+const wrapWithTryCatch1 = fn =>
+    (req, res, next) =>
+        Promise.resolve(fn(req, res, next)).catch(next);
+
+// function wrapWithTyCatch(fn) {
+//     return function(req, res, next) {
+//         return Promise.resolve(fn(req, res, next)).catch(next);
+//     }
+// }
+
+function wrapWithTryCatch(fn) {
+    return async function (req, res, next) {
         try {
-            // HTTP
-            const {title, authors, isbn, description} = req.body;
-
-            // JS
-            await bookService.createOrUpdate({title, authors, isbn, description});
-
-            // HTTP
-            res.redirect("/book/" + isbn);
+            await fn(req, res, next);
         } catch (e) {
-            console.log(e);
             next(e);
         }
+    };
+}
+
+function withErrorHandling(api) {
+    return mapValues(api, wrapWithTryCatch);
+}
+
+module.exports = ({bookService, bookRepository}) => withErrorHandling({
+    async createOrUpdate(req, res, next) {
+        // HTTP
+        const {title, authors, isbn, description} = req.body;
+
+        // JS
+        await bookService.createOrUpdate({title, authors, isbn, description});
+
+        // HTTP
+        res.redirect("/book/" + isbn);
     },
     async deleteOne(req, res, next) {
-        try {
-            const isbn = req.params.isbn;
+        const isbn = req.params.isbn;
 
-            await bookRepository.delete(isbn);
+        await bookRepository.delete(isbn);
 
-            res.status(204).end();
-        } catch(e) {
-            next(e);
-        }
+        res.status(204).end();
     },
     async details(req, res, next) {
-        try {
-            // HTTP
-            const isbn = req.params.isbn;
+        // HTTP
+        const isbn = req.params.isbn;
 
-            // JS
-            const book = await bookRepository.findOne(isbn);
+        // JS
+        const book = await bookRepository.findOne(isbn);
 
-            // HTTP
-            book ? res.json(book): next();
-        } catch (e) {
-            next(e);
-        }
+        // HTTP
+        book ? res.json(book) : next();
     }
 });
 
-// statements (if) vs expressions (?:)
-
-
-// Mongo API: books.deleteOne({isbn})
