@@ -44,13 +44,25 @@ module.exports = ({bookService, bookRepository}) => withErrorHandling({
     },
     async details(req, res, next) {
         // HTTP
+        const nolayout = req.query.nolayout;
+        const layout = typeof nolayout === "undefined" ? "layout": "";
         const isbn = req.params.isbn;
 
         // JS
         const book = await bookRepository.findOne(isbn);
 
         // HTTP
-        book ? res.json(book) : next();
+        book ? res.format({
+            "text/html"() {
+                res.render("book", {book, layout});
+            },
+            "application/json"() {
+                res.json(book);
+            },
+            "default"() {
+                res.json(book);
+            }
+        }) : next();
     }
 });
 

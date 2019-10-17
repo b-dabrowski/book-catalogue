@@ -17,7 +17,7 @@ describe('Book inventory', function () {
             .set('Content-Type', 'application/json')
             .expect(302);
         // GET
-        const readResult = await request.get(createResult.header.location).expect(200);
+        const readResult = await request.get(createResult.header.location).set("Accept", "application/json").expect(200);
 
         assert.deepStrictEqual(readResult.body, {
             title: "JavaScript in Action",
