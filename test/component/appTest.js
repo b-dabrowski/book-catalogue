@@ -5,6 +5,20 @@ const app = require('../../src/app');
 describe('Book inventory', function () {
     it('allows to stock up the items', async function () {
         const request = httpClient(app);
+
+        for(let i = 100 ; i < 200; ++i) {
+            await request
+                .post('/book')
+                .send({
+                    title: "JavaScript in Action",
+                    authors: ["James Smith", "Kate Donovan"],
+                    isbn: `0123456${i}`,
+                    description: "The ultimate JS book!"
+                })
+                .set('Content-Type', 'application/json')
+                .expect(302);
+        }
+
         // POST/REDIRECT
         const createResult = await request
             .post('/book')
