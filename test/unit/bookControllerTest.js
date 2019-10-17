@@ -1,4 +1,4 @@
-const bookControllerFactory = require("../../src/bookController");
+const bookControllerFactory = require("../../src/book/bookController");
 const assert = require("assert");
 
 describe("Book controller", function() {
