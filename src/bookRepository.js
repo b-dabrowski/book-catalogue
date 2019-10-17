@@ -1,7 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 
 // const url = 'mongodb://db:27017/booksapi'; // when using docker-compose for full development
-const url = 'mongodb://localhost:27017/booksapi1';
+const url = 'mongodb://localhost:27017/booksapi';
 
 let booksPromise = MongoClient
     .connect(url, {bufferMaxEntries: 0, useNewUrlParser: true})
@@ -21,6 +21,12 @@ module.exports = {
     async findOne(isbn) {
         const books = await booksPromise;
         return books.findOne({isbn}, {projection: {_id: 0}});
+    },
+    async findAll() {
+        const books = await booksPromise;
+        return books
+            .find()
+            .toArray();
     },
     async delete(isbn) {
         const books = await booksPromise;

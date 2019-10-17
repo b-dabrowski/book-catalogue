@@ -17,5 +17,18 @@ module.exports = {
                 res.json(book);
             }
         }) : next();
+    },
+    list(books, res) {
+        res.format({
+            'text/html'() {
+                res.render("books", {books});
+            },
+            'application/json'() {
+                res.json(books);
+            },
+            'default'() {
+                res.json(books);
+            }
+        });
     }
 };

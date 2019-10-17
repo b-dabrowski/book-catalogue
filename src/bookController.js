@@ -43,6 +43,11 @@ module.exports = ({bookService, bookRepository}) => withErrorHandling({
 
         responses.delete(res)
     },
+    async list(req, res, next) {
+        const books = await bookRepository.findAll();
+
+        responses.list(books, res);
+    },
     async details(req, res, next) {
         // HTTP
         const nolayout = req.query.nolayout;
